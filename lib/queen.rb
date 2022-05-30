@@ -3,4 +3,8 @@ class Queen
     @location = location
     @symbol = color == 'black' ? "♛" : "♕"
   end
+
+  def is_black?
+    @color == 'black'
+  end
 end

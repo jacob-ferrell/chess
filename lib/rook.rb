@@ -2,6 +2,15 @@ class Rook
 
   def initialize(location, color)
     @location = location
-    @symbol = color == 'black' ? "♜" : "♖"
+    @color = color
+    @symbol = is_black? ? "♜" : "♖"
+  end
+
+  def move_set
+    [[1, 0], [-1, 0], [0, 1], [0, -1]]
+  end
+
+  def is_black?
+    @color == 'black'
   end
 end
