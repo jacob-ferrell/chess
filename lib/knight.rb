@@ -1,8 +1,9 @@
 class Knight
-  attr_reader :symbol
+  attr_reader :symbol, :color
     def initialize(location, color)
       @location = location
-      @symbol = color == 'black' ? "♞" : "♘"
+      @color = color
+      @symbol = is_black? ? "♞" : "♘"
     end
   
     def move_set

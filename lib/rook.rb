@@ -1,5 +1,5 @@
 class Rook
-  attr_reader :symbol
+  attr_reader :symbol, :color
   def initialize(location, color)
     @location = location
     @color = color

@@ -1,9 +1,4 @@
-require_relative 'pawn.rb'
-require_relative 'rook.rb'
-require_relative 'knight.rb'
-require_relative 'bishop.rb'
-require_relative 'king.rb'
-require_relative 'queen.rb'
+
 
 class Board
   attr_accessor :grid
@@ -26,16 +21,22 @@ class Board
     grid[7][1] = Knight.new([0, 1], 'white') && grid[7][6] = Knight.new([0, 6], 'white')
     #create bishops and add to grid
     grid[0][2] = Bishop.new([0, 2], 'black') && grid[0][5] = Bishop.new([0, 5], 'black')
-    grid[7][2] = Bishop.new([7, 2], 'black') && grid[7][5] = Bishop.new([7, 5], 'black')
+    grid[7][2] = Bishop.new([7, 2], 'white') && grid[7][5] = Bishop.new([7, 5], 'white')
     #create kings and add to grid
-    grid[0][4] = King.new([0, 3], 'black')
-    grid[7][4] = King.new([7, 3], 'white')
+    grid[0][4] = black_king = King.new([0, 3], 'black')
+    grid[7][4] = white_king = King.new([7, 3], 'white')
     #create queens and add to grid
     grid[0][3] = Queen.new([0, 4], 'black')
     grid[7][3] = Queen.new([7, 4], 'white')
     return grid
   end
+
+  def game_over?
+    false
+  end
+
+  def print_board
+    @grid.map { |e| e.map.with_index { |el, ind| el.symbol unless el.nil?}}.each { |e| p e}
+  end
 end
 
-b = Board.new
-b.grid.map { |e| e.map.with_index { |el, ind| el.symbol unless el.nil?}}.each { |e| p e}
