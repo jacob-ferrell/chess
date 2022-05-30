@@ -1,5 +1,5 @@
 class Pawn
-
+  attr_reader :symbol
   def initialize(location, color)
     @location = location
     @color = color

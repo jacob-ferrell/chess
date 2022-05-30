@@ -1,4 +1,5 @@
 class Bishop
+  attr_reader :symbol
   def initialize(location, color)
     @location = location
     @symbol = is_black? ? "♝" : "♗"
