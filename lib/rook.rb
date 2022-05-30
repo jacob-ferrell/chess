@@ -1,5 +1,8 @@
+require_relative 'piece.rb'
+
 class Rook
-  attr_reader :symbol, :color
+  include Piece  
+  attr_accessor :symbol, :color, :location
   def initialize(location, color)
     @location = location
     @color = color
@@ -10,7 +13,5 @@ class Rook
     [[1, 0], [-1, 0], [0, 1], [0, -1]]
   end
 
-  def is_black?
-    @color == 'black'
-  end
+
 end

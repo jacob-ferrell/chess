@@ -1,5 +1,8 @@
+require_relative 'piece.rb'
+
 class Bishop
-  attr_reader :symbol, :color
+  include Piece    
+  attr_accessor :symbol, :color, :location
   def initialize(location, color)
     @location = location
     @color = color
@@ -10,8 +13,6 @@ class Bishop
     [1, 1, -1, -1].permutation(2).to_a.uniq
   end
 
-  def is_black?
-    @color == 'black'
-  end
+
 end
      

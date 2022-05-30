@@ -1,5 +1,8 @@
+require_relative 'piece.rb'
+
 class Pawn
-  attr_reader :symbol, :color
+  include Piece
+  attr_accessor :symbol, :color, :location
   def initialize(location, color)
     @location = location
     @color = color
@@ -8,15 +11,11 @@ class Pawn
 
   def move_set
     if is_black?
-      row == 6 ? [[1, 0], [2, 0]] : [[1, 0]]
+      row == 1 ? [[1, 0], [2, 0]] : [[1, 0]]
     else
-      row == 1 ? [[-1, 0], [-2, 0]] : [[-1, 0]]
+      row == 6 ? [[-1, 0], [-2, 0]] : [[-1, 0]]
     end
 
-  end
-
-  def is_black?
-    @color == 'black'
   end
 
   def row
@@ -27,3 +26,4 @@ class Pawn
     return @location.last
   end
 end
+

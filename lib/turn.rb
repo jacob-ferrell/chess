@@ -4,7 +4,8 @@ class Turn
     @board = board
     @board.print_board
     @selected_piece = select_piece
-
+    @move = get_move
+    @selected_piece.move_piece(@move, @board)
   end
   #get the location of the piece the player wishes to move.  if the space is valid, convert the input to a corresponding place on the board grid in [row, column] format.  if the piece belongs to the player, select the piece 
   def select_piece
@@ -42,4 +43,15 @@ class Turn
     row = number_pairs[input.last.to_i]
     return [row, column]
   end
+
+  def get_move
+    puts "#{@player.name}, select a space to move your #{@selected_piece.class} to"
+    move = gets.chomp
+    coord = get_coordinate(move) if is_valid?(move)
+    return coord if @selected_piece.get_moves(@board).include?(coord)
+    puts "Invalid move..."
+    get_move
+  end
+
+ 
 end

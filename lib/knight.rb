@@ -1,5 +1,8 @@
+require_relative 'piece.rb'
+
 class Knight
-  attr_reader :symbol, :color
+  include Piece
+  attr_accessor :symbol, :color, :location
     def initialize(location, color)
       @location = location
       @color = color
@@ -9,8 +12,5 @@ class Knight
     def move_set
       [1, -1, 2, -2].permutation(2).to_a.reject { |y, x| y.abs == x.abs}
     end
-  
-    def is_black?
-      @color == 'black'
-    end
+
   end
