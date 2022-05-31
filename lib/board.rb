@@ -1,18 +1,19 @@
 
 
 class Board
-  attr_accessor :grid
+  attr_accessor :grid, :graveyard
   
   def initialize
     @grid = build_grid
+    @graveyard = []
   end
 
   def build_grid
     #create all starting pieces on the chessboard and store each piece as an object within it's corresponding array element
     grid = Array.new(8) {Array.new(8)}
      #create pawns and add to grid
-    grid[1] = grid[1].map.with_index { |element, ind| Pawn.new([1, ind], 'black') }
-    grid[6] = grid[6].map.with_index { |element, ind| Pawn.new([6, ind], 'white') }
+    grid[1] = grid[1].map.with_index { |element, ind| Pawn.new([1, ind], 'black', @grid) }
+    grid[6] = grid[6].map.with_index { |element, ind| Pawn.new([6, ind], 'white', @grid) }
     #create rooks and add to grid
     grid[0] = grid[0].map.with_index { |element, ind| Rook.new([0, ind], 'black') unless (1..6).include?(ind) }
     grid[7] = grid[7].map.with_index { |element, ind| Rook.new([7, ind], 'white') unless (1..6).include?(ind) }
@@ -40,7 +41,15 @@ class Board
   end
 
   def print_board
-    @grid.map { |e| e.map.with_index { |el, ind| el.symbol unless el.nil?}}.each { |e| p e}
+    numbers = (1..8).to_a.reverse
+    letters = ('a'..'h').to_a
+    puts "    #{letters.join('   ')}"
+    puts "  --------------------------------- #{@graveyard.map { |p| p.symbol }.join(' ')}"
+    @grid.map { |e| e.map { |el| el ? el.symbol : ' '}}.each_with_index do |e, i|
+        puts "#{numbers[i]} | #{e.join(' | ')} |"
+        puts '  ---------------------------------'
+    end
+    puts "    #{letters.join('   ')}"
   end
 end
 
