@@ -18,13 +18,21 @@ class Player
       if is_own_piece?(piece)
         piece
       else 
-        puts "You have selected an empty space or a piece which is not yours"
-        select_piece
+        invalid_space
       end
     else
-      puts "Invalid input"
-      select_piece
+      invalid_input
     end
+  end
+  #print that input was invalid and get selection from user again
+  def invalid_input
+    puts "Invalid input"
+    return select_piece
+  end
+#print that space is taken or does not belong to player and get selection again
+  def invalid_space
+    puts "You have selected an empty space or a piece which is not yours"
+    select_piece
   end
   #prompt user for piece choice and return choice
   def get_piece_choice
@@ -46,7 +54,7 @@ class Player
     puts "Player #{@number}, enter your name:"
     gets.chomp
   end
-
+  #get the location of the piece the player wishes to move.  if the space is valid, convert the input to a corresponding place on the board grid in [row, column] format.  if the piece belongs to the player, select the piece 
   def get_move(selected_piece)
     @board.print_board
     puts "#{self.name}, select a space to move your #{selected_piece.class}(#{@input}) to, or enter X to choose a different piece"
@@ -61,7 +69,20 @@ class Player
     get_move(selected_piece)
   end
   #determine if player's king is in check
-  def in_check?
-    
+  def in_check?(board = @board)
+    moves = []
+    king_location = @king.location
+    get_opponents_pieces.each { |piece| moves += piece.get_moves(board) }
+    moves.include?(king_location)
+  end
+#returns an array containing all the opponents pieces that are currently on the board
+  def get_opponents_pieces
+    opponents_pieces = []
+    @board.grid.each do |row| 
+      row.each do |space|
+        opponents_pieces << space if space && space.color != self.color
+      end
+    end
+    opponents_pieces
   end
 end

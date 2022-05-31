@@ -47,7 +47,7 @@ class Board
     puts "  +---+---+---+---+---+---+---+---+ #{@graveyard.map { |p| p.symbol }.join(' ')}"
     @grid.map { |e| e.map { |el| el ? el.symbol : ' '}}.each_with_index do |e, i|
         puts "#{numbers[i]} | #{e.join(' | ')} |"
-        puts '  ---------------------------------'
+        puts '  +---+---+---+---+---+---+---+---+'
     end
     puts "    #{letters.join('   ')}"
   end
