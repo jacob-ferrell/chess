@@ -1,18 +1,19 @@
 class Player
   attr_accessor :color, :number, :name, :input
 
-  def initialize(color, number)
+  def initialize(color, number, board)
     @color = color
     @number = number
-    @name = get_name
-  end
-
-  def select_piece(board)
     @board = board
+    @name = get_name
+    @king = number === 1 ? @board.white_king : @board.black_king
+  end
+#return a chosen piece as long as a piece which belongs to the player exists at the given location
+  def select_piece
     input = get_piece_choice
     if is_valid?(input)
       @input = input 
-      (row, col) = get_coordinate(input)
+      (row, col) = @board.get_coordinate(input)
       piece = @board.grid[row][col]
       if is_own_piece?(piece)
         piece
@@ -25,7 +26,7 @@ class Player
       select_piece
     end
   end
-  #prompt us
+  #prompt user for piece choice and return choice
   def get_piece_choice
     puts "#{self.name}, enter the location of the piece you wish to move.\nBegin with the letter, and then the number.  Example: a2"
     input = gets.chomp
@@ -40,22 +41,27 @@ class Player
     input = input.downcase.chars
     input.length === 2 && ('a'..'h').include?(input.first) && (1..8).include?(input.last.to_i)
   end
-
-  def get_coordinate(input)
-    input = input.chars
-    #convert letter to corresponding column
-    letter_pairs = {}
-    ('a'..'h').each_with_index { |char, i| letter_pairs[char] = i }
-    column = letter_pairs[input.first]
-    #convert number to corresponding row
-    number_pairs = {}
-    (1..8).to_a.reverse.each_with_index { |num, i| number_pairs[num] = i }
-    row = number_pairs[input.last.to_i]
-    return [row, column]
-  end
-
+#get player name from user
   def get_name
     puts "Player #{@number}, enter your name:"
     gets.chomp
+  end
+
+  def get_move(selected_piece)
+    @board.print_board
+    puts "#{self.name}, select a space to move your #{selected_piece.class}(#{@input}) to, or enter X to choose a different piece"
+    move = gets.chomp
+    coord = @board.get_coordinate(move) if is_valid?(move)
+    if move.downcase == 'x'
+        selected_piece = select_piece
+        return get_move(selected_piece)
+    end
+    return coord if selected_piece.get_moves(@board).include?(coord)
+    puts "Invalid move..."
+    get_move(selected_piece)
+  end
+  #determine if player's king is in check
+  def in_check?
+    
   end
 end

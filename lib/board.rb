@@ -1,7 +1,7 @@
 
 
 class Board
-  attr_accessor :grid, :graveyard
+  attr_accessor :grid, :graveyard, :black_king, :white_king
   
   def initialize
     @grid = build_grid
@@ -28,8 +28,8 @@ class Board
     grid[7][2] = Bishop.new([7, 2], 'white')
     grid[7][5] = Bishop.new([7, 5], 'white')
     #create kings and add to grid
-    grid[0][4] = black_king = King.new([0, 4], 'black')
-    grid[7][4] = white_king = King.new([7, 4], 'white')
+    grid[0][4] = @black_king = King.new([0, 4], 'black')
+    grid[7][4] = @white_king = King.new([7, 4], 'white')
     #create queens and add to grid
     grid[0][3] = Queen.new([0, 3], 'black')
     grid[7][3] = Queen.new([7, 3], 'white')
@@ -50,6 +50,19 @@ class Board
         puts '  ---------------------------------'
     end
     puts "    #{letters.join('   ')}"
+  end
+
+  def get_coordinate(input)
+    input = input.chars
+    #convert letter to corresponding column
+    letter_pairs = {}
+    ('a'..'h').each_with_index { |char, i| letter_pairs[char] = i }
+    column = letter_pairs[input.first]
+    #convert number to corresponding row
+    number_pairs = {}
+    (1..8).to_a.reverse.each_with_index { |num, i| number_pairs[num] = i }
+    row = number_pairs[input.last.to_i]
+    return [row, column]
   end
 end
 
