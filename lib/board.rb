@@ -44,7 +44,7 @@ class Board
     numbers = (1..8).to_a.reverse
     letters = ('a'..'h').to_a
     puts "    #{letters.join('   ')}"
-    puts "  --------------------------------- #{@graveyard.map { |p| p.symbol }.join(' ')}"
+    puts "  +---+---+---+---+---+---+---+---+ #{@graveyard.map { |p| p.symbol }.join(' ')}"
     @grid.map { |e| e.map { |el| el ? el.symbol : ' '}}.each_with_index do |e, i|
         puts "#{numbers[i]} | #{e.join(' | ')} |"
         puts '  ---------------------------------'

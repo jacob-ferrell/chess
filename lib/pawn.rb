@@ -22,7 +22,6 @@ class Pawn
       moves += [[-1, -1]] if can_attack?(-1, board)
       moves += [[-1, 1]] if can_attack?(1, board)
     end
-    p moves
     moves
   end
 

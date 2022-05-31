@@ -9,7 +9,6 @@ module Piece
     #Pawns have a variable move set due to their unique ability to take pieces diagonally even though they can only traverse the board vertically, 
     #so the board needs to be passed in to their move_set method so it can detect if it's capable of attack
     move_set = self.is_a?(Pawn) ? self.move_set(board) : self.move_set
-    p move_set
     start = self.location
     (row, col) = start
     #loop through every possible movement direction 
@@ -26,7 +25,7 @@ module Piece
           if next_space.color == self.color
             break
           else
-            #if space contains an enemy piece, add it to possible moves unless the current piece is a pawn, as pawns cannot take pieces vertically
+            #if space contains an enemy piece, add it to possible moves unless the current piece is a pawn and the enemy piece is vertically adjacent
             direction_moves << [row, col] unless self.is_a?(Pawn) && c == 0
             break
           end
@@ -39,7 +38,6 @@ module Piece
       moves << direction_moves
       (row, col) = start
     end
-    p moves.flatten(1)
     moves.flatten(1)
   end
   #determine if given coordinates exist on the board
