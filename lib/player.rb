@@ -9,13 +9,16 @@ class Player
     
   end
 #return a chosen piece as long as a piece which belongs to the player exists at the given location
-  def select_piece
+  def select_piece(board = @board)
+    @board = board
+    @board.print_board
     input = get_piece_choice
     if is_valid?(input)
       @input = input 
       (row, col) = @board.get_coordinate(input)
       piece = @board.grid[row][col]
       if is_own_piece?(piece)
+        @piece = piece
         piece
       else 
         invalid_space
@@ -55,18 +58,19 @@ class Player
     gets.chomp
   end
   #get the location of the piece the player wishes to move.  if the space is valid, convert the input to a corresponding place on the board grid in [row, column] format.  if the piece belongs to the player, select the piece 
-  def get_move(selected_piece)
+  def get_move(piece)
 
-    puts "#{self.name}, select a space to move your #{selected_piece.class}(#{@input}) to, or enter X to choose a different piece"
+    puts "#{self.name}, select a space to move your #{piece.class}(#{@input}) to, or enter X to choose a different piece"
     move = gets.chomp
     coord = @board.get_coordinate(move) if is_valid?(move)
+    @move = coord
     if move.downcase == 'x'
-        selected_piece = select_piece
-        return get_move(selected_piece)
+        piece = select_piece
+        return get_move(piece)
     end
-    return coord if selected_piece.get_moves(@board).include?(coord)
+    return coord if piece.get_moves(@board).include?(coord) && !results_in_check?
     puts "Invalid move..."
-    get_move(selected_piece)
+    get_move(piece)
   end
   #determine if player's king is in check
   def in_check?
@@ -105,5 +109,14 @@ class Player
     end
     partitioned_pieces.push(players_pieces, opponents_pieces)
     partitioned_pieces
+  end
+
+  def results_in_check?
+    tmp_board = duplicate(@board)
+    @piece.move_piece(@move, @board, true)
+    results_in_check = duplicate(self.in_check?)
+    @board = duplicate(tmp_board)
+    tmp_board = nil
+    return results_in_check
   end
 end

@@ -6,8 +6,6 @@ class Round
   end
 
   def play_round
-    until @board.game_over?
-      @@players.each { |player| Turn.new(player, @board) unless @board.game_over? }
-    end
+    @@players.each { |player| Turn.new(player, @board) unless @board.game_over? } until @board.game_over?
   end
 end
