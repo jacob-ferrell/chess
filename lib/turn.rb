@@ -23,8 +23,10 @@ class Turn
   end
 
   def get_choices
-    @piece = @player.select_piece(@board)
-    @move = @player.get_move(@piece)
+    choices = PlayerChoices.new(@player, @board)
+    @piece = choices.piece
+    @move = choices.move
+
   end
 
   def cant
