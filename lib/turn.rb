@@ -11,6 +11,8 @@ class Turn
     return save_game if get_choices == 'save'
     test_choices
     make_move
+    p @piece.is_a?(King)
+    p "#{@piece.has_moved} poop" if @piece.is_a?(King)
   end
 
   # make a deep copy of the board

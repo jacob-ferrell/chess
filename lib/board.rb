@@ -69,17 +69,20 @@ class Board
     piece.location = move
     @grid[end_row][end_col] = piece
     grid[start_row][start_col] = nil
+    piece.has_moved = true if piece.is_a?(King) || piece.is_a?(Rook)
   end
   # make a deep copy of the board and starting location of selected piece
   # make the chosen move, test whether player is in check and store result as variable
-  # revert to original grid and revert pieces location. return variable.
+  # revert to original grid and revert piece's location. return variable.
   def test_move(move, piece, player)
+    tmp_has_moved = duplicate(piece.has_moved) if piece.is_a?(King) || piece.is_a?(Rook)
     tmp_grid = duplicate(@grid)
     start_location = duplicate(piece.location)
     move_piece(move, piece)
     check = duplicate(player.in_check?)
     @grid = duplicate(tmp_grid)
     piece.location = start_location
+    piece.has_moved = tmp_has_moved if piece.is_a?(King) || piece.is_a?(Rook)
     check
   end
 end

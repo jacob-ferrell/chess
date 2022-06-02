@@ -23,6 +23,10 @@ class Player
     opponents_pieces.each { |piece| moves += piece.get_moves(@board) }
     moves.include?(king_location)
   end
+  #determine if player is capable of castling
+  def can_castle?
+
+  end
 
   # determine if player is in checkmate by performing every possible move by the players pieces and determining if any result in no longer being in check
   def check_mate?
