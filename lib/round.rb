@@ -5,14 +5,15 @@ class Round
     @@players = players
     @board = board
     play_round
-    @winner = get_winner
+    @winner = get_winner 
   end
 
   def play_round
-    @@players.each { |player| Turn.new(player, @board, @@players) unless @board.game_over } until @board.game_over || is_draw?
+    @@players.each { |player| Turn.new(player, @board, @@players) unless @board.game_over || is_draw? } until @board.game_over || is_draw?
   end
 
   def get_winner
+    return nil if is_draw? || @@players.select { |player| player.check_mate? }.empty?
     @@players.reject { |player| player == @board.loser }.first
   end
 
@@ -24,7 +25,11 @@ class Round
       only_king_left += 1 if pieces.length == 1
       king_and_bishop_or_knight += 1 if king_and_bishop_or_knight?(pieces)
     end
-    return true if only_king_left == 2 || (only_king_left == 1 && king_and_bishop_or_knight == 1)
+    p only_king_left, king_and_bishop_or_knight
+    if only_king_left == 2 || (only_king_left == 1 && king_and_bishop_or_knight == 1)
+      @board.game_over = true
+      return true
+    end
     false
   end
 
