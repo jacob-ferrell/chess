@@ -6,11 +6,12 @@ class Player
     @number = number
     @board = board
     @name = get_name
+    @pieces_on_board = get_partitioned_pieces.first
   end
 
   # get player name from user
   def get_name
-    puts "Player #{@number}, enter your name:"
+    puts "\nPlayer #{@number}, enter your name:"
     gets.chomp
   end
 

@@ -9,7 +9,7 @@ class Round
   end
 
   def play_round
-    @@players.each { |player| Turn.new(player, @board) unless @board.game_over } until @board.game_over || is_draw?
+    @@players.each { |player| Turn.new(player, @board, @@players) unless @board.game_over } until @board.game_over || is_draw?
   end
 
   def get_winner
