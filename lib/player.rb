@@ -6,7 +6,6 @@ class Player
     @number = number
     @board = board
     @name = get_name
-    @pieces_on_board = get_partitioned_pieces.first
   end
 
   # get player name from user
@@ -49,6 +48,7 @@ class Player
       end
     end
     partitioned_pieces.push(players_pieces, opponents_pieces)
+    @pieces_on_board = partitioned_pieces.first
     partitioned_pieces
   end
 end
