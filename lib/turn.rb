@@ -7,7 +7,7 @@ class Turn
     @board.print_board
     in_check
     get_choices
-    #get_choices while results_in_check?
+    get_choices while @board.test_move(@move, @piece, @player)
     make_move
   end
   #make a deep copy of the board
@@ -15,7 +15,7 @@ class Turn
   #revert to original board
   def results_in_check?
     tmp_board = duplicate(@board)
-    @piece.move_piece(@move, @board, true)
+    @board.move_piece(@move, @piece.location, true)
     results_in_check = duplicate(@player.in_check?)
     @board = duplicate(tmp_board)
     tmp_board = nil
@@ -40,6 +40,6 @@ class Turn
 
 
   def make_move
-    @piece.move_piece(@move, @board)
+    @board.move_piece(@move, @piece)
   end
 end

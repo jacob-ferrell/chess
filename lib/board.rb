@@ -6,6 +6,7 @@ class Board
   def initialize
     @grid = build_grid
     @graveyard = []
+    print_board
   end
 
   def build_grid
@@ -63,6 +64,25 @@ class Board
     (1..8).to_a.reverse.each_with_index { |num, i| number_pairs[num] = i }
     row = number_pairs[input.last.to_i]
     return [row, column]
+  end
+
+  def move_piece(move, piece)
+    (start_row, start_col) = duplicate(piece.location)
+    (end_row, end_col) = move
+    #board.graveyard << board.grid[end_row][end_col] if !test_move && board.grid[end_row][end_col]
+    piece.location = move
+    @grid[end_row][end_col] = piece
+    grid[start_row][start_col] = nil
+  end
+
+  def test_move(move, piece, player)
+    tmp_grid = duplicate(@grid)
+    start_location = duplicate(piece.location)
+    move_piece(move, piece)
+    check = duplicate(player.in_check?)
+    @grid = duplicate(tmp_grid)
+    piece.location = start_location
+    return check
   end
 end
 
