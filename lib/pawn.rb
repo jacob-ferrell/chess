@@ -1,12 +1,13 @@
-require_relative 'piece.rb'
+require_relative 'piece'
 
 class Pawn
   include Piece
   attr_accessor :symbol, :color, :location
-  def initialize(location, color, grid)
+
+  def initialize(location, color, _grid)
     @location = location
     @color = color
-    @symbol = is_black? ? "♟" : "♙"
+    @symbol = is_black? ? '♟' : '♙'
   end
 
   def move_set(board)
@@ -33,15 +34,13 @@ class Pawn
       space = board.grid[row - 1][col + direction]
       space && space.color != 'white'
     end
-      
   end
 
   def row
-    return @location.first
+    @location.first
   end
 
   def col
-    return @location.last
+    @location.last
   end
 end
-
