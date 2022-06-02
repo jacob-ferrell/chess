@@ -51,14 +51,4 @@ module Piece
   def single_moves?
     is_a?(Pawn) || is_a?(King) || is_a?(Knight)
   end
-
-  # move piece to chosen location. if a piece is being taken, add it to the graveyard
-  def move_piece(move, board, _test_move = false)
-    (start_row, start_col) = duplicate(location)
-    (end_row, end_col) = move
-    # board.graveyard << board.grid[end_row][end_col] if !test_move && board.grid[end_row][end_col]
-    self.location = move
-    board.grid[end_row][end_col] = self
-    board.grid[start_row][start_col] = nil
-  end
 end

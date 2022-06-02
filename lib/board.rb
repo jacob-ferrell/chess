@@ -1,11 +1,11 @@
 class Board
-  attr_accessor :grid, :graveyard, :black_king, :white_king, :game_over
+  attr_accessor :grid, :graveyard, :black_king, :white_king, :game_over, :loser
 
   def initialize
     @grid = build_grid
     @graveyard = []
     @game_over = false
-    print_board
+    @loser = nil
   end
 
   def build_grid

@@ -4,10 +4,10 @@ class Turn
     @player = player
     @board = board
     @board.print_board
+    return @board.loser = @player if @player.check_mate?
     in_check
-    return if @player.check_mate?
     get_choices
-    get_choices while @board.test_move(@move, @piece, @player)
+    test_choices
     make_move
   end
 
@@ -29,12 +29,20 @@ class Turn
     @move = choices.move
   end
 
-  def cant
-    puts "Can't do that!"
+  def test_choices
+    while @board.test_move(@move, @piece, @player)
+      into_check
+      get_choices
+    end
+  end
+
+  def into_check
+    return puts "\nYour move choice did not take you out of check! Move prevented!" if @player.in_check?
+    puts "\nYou cannot move yourself into check!  Move prevented!"
   end
 
   def in_check
-    puts "#{@player.name}, you are in check!  You must move yourself out of check!" if @player.in_check?
+    puts "\n#{@player.name}, you are in check!  You must move yourself out of check!" if @player.in_check?
   end
 
   def make_move
