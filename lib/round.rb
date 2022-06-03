@@ -25,7 +25,6 @@ class Round
       only_king_left += 1 if pieces.length == 1
       king_and_bishop_or_knight += 1 if king_and_bishop_or_knight?(pieces)
     end
-    p only_king_left, king_and_bishop_or_knight
     if only_king_left == 2 || (only_king_left == 1 && king_and_bishop_or_knight == 1)
       @board.game_over = true
       return true

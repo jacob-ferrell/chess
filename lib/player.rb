@@ -25,7 +25,27 @@ class Player
   end
   #determine if player is capable of castling
   def can_castle?
-
+    king = @pieces_on_board.select { |piece| piece.is_a?(King) && !piece.has_moved }.first
+    rooks = @pieces_on_board.select { |piece| piece.is_a?(Rook) && !piece.has_moved }
+    if king && rooks.any?
+    rooks.each do |rook| 
+      spaces = get_spaces_between(duplicate(king.location), duplicate(rook.location)) 
+      spaces.select { |space| @board.grid[space.first][space.last] }.empty?
+    end
+    p spaces_between
+    end
+  end
+  #get all spaces between king and given rook
+  def get_spaces_between(king_location, rook_location)
+    (king_row, king_col) = king_location
+    (rook_row, rook_col) = rook_location
+    spaces = []
+    i = rook_col > king_col ? 1 : -1
+    until (king_col + i) === rook_col
+      king_col += i
+      spaces << [king_row, king_col] 
+    end
+    spaces
   end
 
   # determine if player is in checkmate by performing every possible move by the players pieces and determining if any result in no longer being in check
