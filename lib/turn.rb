@@ -6,24 +6,17 @@ class Turn
     @players = players
     @board = board
     @board.print_board
+    play_turn
     return @board.loser = @player if @player.check_mate?
-    in_check
+    test_check
     return save_game if get_choices == 'save'
     test_choices
-    @player.can_castle?
+
     make_move
   end
 
-  # make a deep copy of the board
-  # make the chosen move, test whether player is in check and store result as variable
-  # revert to original board
-  def results_in_check?
-    tmp_board = duplicate(@board)
-    @board.move_piece(@move, @piece.location, true)
-    results_in_check = duplicate(@player.in_check?)
-    @board = duplicate(tmp_board)
-    tmp_board = nil
-    results_in_check
+  def play_turn
+
   end
 
   def get_choices
@@ -46,7 +39,7 @@ class Turn
     puts "\nYou cannot move yourself into check!  Move prevented!"
   end
 
-  def in_check
+  def test_check
     puts "\n#{@player.name}, you are in check!  You must move yourself out of check!" if @player.in_check?
   end
 

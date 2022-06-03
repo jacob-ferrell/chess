@@ -40,7 +40,7 @@ class PlayerChoices
 
   # print that space is taken or does not belong to player and get selection again
   def invalid_space
-    puts '\nYou have selected an empty space or a piece which is not yours'
+    puts "\nYou have selected an empty space or a piece which is not yours"
     select_piece
   end
 

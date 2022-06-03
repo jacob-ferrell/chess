@@ -24,16 +24,29 @@ class Player
     moves.include?(king_location)
   end
   #determine if player is capable of castling
-  def can_castle?
-    king = @pieces_on_board.select { |piece| piece.is_a?(King) && !piece.has_moved }.first
+  def get_castle_rooks
+    king = @pieces_on_board.select { |piece| piece.is_a?(King) }.first
     rooks = @pieces_on_board.select { |piece| piece.is_a?(Rook) && !piece.has_moved }
-    if king && rooks.any?
-    rooks.each do |rook| 
-      spaces = get_spaces_between(duplicate(king.location), duplicate(rook.location)) 
-      spaces.select { |space| @board.grid[space.first][space.last] }.empty?
+    #return false if player is in check, has moved their king, or has no elligible rooks
+    nil if self.in_check? || king.has_moved || rooks.empty?
+    castlable_rooks = []
+    rooks.each do |rook|
+      #get spaces between given rook and king 
+      spaces_between = get_spaces_between(duplicate(king.location), duplicate(rook.location))
+      #determine if all spaces between are empty
+      is_empty = spaces.select { |space| @board.grid[space.first][space.last] }.empty?
+      #determine if the king would be passing through check or moving into check
+      spaces_between += duplicate(rook.location)
+      is_safe = spaces_between.select { |space| @board.test_move(space, rook, self) }.empty?
+      #add rook to array if it meets previous two conditions
+      castlable_rooks << rook if is_empty && is_safe
     end
-    p spaces_between
-    end
+    #return array of rooks unless it is empty
+    castlable_rooks ? castlable_rooks.any? : nil   
+  end
+  #determine if player is capable of castling
+  def can_castle?
+    !get_castle_rooks.nil?
   end
   #get all spaces between king and given rook
   def get_spaces_between(king_location, rook_location)
