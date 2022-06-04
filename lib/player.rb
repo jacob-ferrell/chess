@@ -28,7 +28,7 @@ class Player
     king = @pieces_on_board.select { |piece| piece.is_a?(King) }.first
     rooks = @pieces_on_board.select { |piece| piece.is_a?(Rook) && !piece.has_moved }
     #return false if player is in check, has moved their king, or has no elligible rooks
-    return if self.in_check? || king.has_moved || rooks.empty?
+    return p in_check?, king.has_moved, rooks.empty? if in_check? || king.has_moved || rooks.empty?
     castlable_rooks = []
     rooks.each do |rook|
       #get spaces between given rook and king 

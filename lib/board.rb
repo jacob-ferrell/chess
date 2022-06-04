@@ -63,7 +63,7 @@ class Board
   end
   #move piece to chosen location on grid and remove its presence from it's old space
   def move_piece(move, piece)
-    castle(move, piece) if is_castle?(move, piece)
+    return castle(move, piece) if is_castle?(move, piece)
     (start_row, start_col) = duplicate(piece.location)
     (end_row, end_col) = move
     # board.graveyard << board.grid[end_row][end_col] if !test_move && board.grid[end_row][end_col]
@@ -93,9 +93,13 @@ class Board
   end
 
   def castle(move, piece)
-    rook = duplicate(@grid[move.first][move.last])
-    king = duplicate(piece)
+    rook = @grid[move.first][move.last]
+    king = piece
+    rook.location = duplicate(king.location)
     @grid[move.first][move.last] = king
-    @grid[piece.first][piece.last] = rook
+    @grid[king.location.first][king.location.last] = rook
+    king.location = move
+    rook.has_moved = true
+    king.has_moved = true
   end
 end
