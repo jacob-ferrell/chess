@@ -71,9 +71,14 @@ class PlayerChoices
     return @save = true if move === 'save'
     coord = @board.get_coordinate(move) if is_valid?(move)
     return get_choices if move.downcase == 'x'
+    return coord if valid_castle?(selected_piece, coord)
     return coord if selected_piece.get_moves(@board).include?(coord)
     puts "\nInvalid move..."
     get_choices
+  end
+
+  def valid_castle?(piece, coord)
+    piece.is_a?(King) && @player.can_castle? && @player.get_castle_rooks.map { |rook| rook.location }.include?(coord)
   end
 
   def castle

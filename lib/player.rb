@@ -37,17 +37,16 @@ class Player
       is_empty = spaces_between.select { |space| @board.grid[space.first][space.last] }.empty?
       #determine if the king would be passing through check or moving into check
       spaces_between += [duplicate(rook.location)]
-      p spaces_between
       is_safe = spaces_between.select { |space| @board.test_move(space, rook, self) }.empty?
       #add rook to array if it meets previous two conditions
       castlable_rooks << rook if is_empty && is_safe
     end
     #return array of rooks unless it is empty
-    castlable_rooks ? castlable_rooks.any? : nil   
+    castlable_rooks   
   end
   #determine if player is capable of castling
   def can_castle?
-    !get_castle_rooks.nil?
+    get_castle_rooks.any?
   end
   #get all spaces between king and given rook
   def get_spaces_between(king_location, rook_location)
