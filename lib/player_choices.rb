@@ -12,6 +12,7 @@ class PlayerChoices
 
   # consolidate both method calls into single method so both can easily be reassigned if player provides invalid input or decides on a different move
   def get_choices
+    castle if @player.can_castle?
     @piece = select_piece
     @move = get_move(@piece) unless @save
   end
@@ -73,5 +74,9 @@ class PlayerChoices
     return coord if selected_piece.get_moves(@board).include?(coord)
     puts "\nInvalid move..."
     get_choices
+  end
+
+  def castle
+    puts "\nYou are able to castle! To castle, select your king and move it to the rook you want to swap with"
   end
 end

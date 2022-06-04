@@ -28,15 +28,16 @@ class Player
     king = @pieces_on_board.select { |piece| piece.is_a?(King) }.first
     rooks = @pieces_on_board.select { |piece| piece.is_a?(Rook) && !piece.has_moved }
     #return false if player is in check, has moved their king, or has no elligible rooks
-    nil if self.in_check? || king.has_moved || rooks.empty?
+    return if self.in_check? || king.has_moved || rooks.empty?
     castlable_rooks = []
     rooks.each do |rook|
       #get spaces between given rook and king 
       spaces_between = get_spaces_between(duplicate(king.location), duplicate(rook.location))
       #determine if all spaces between are empty
-      is_empty = spaces.select { |space| @board.grid[space.first][space.last] }.empty?
+      is_empty = spaces_between.select { |space| @board.grid[space.first][space.last] }.empty?
       #determine if the king would be passing through check or moving into check
-      spaces_between += duplicate(rook.location)
+      spaces_between += [duplicate(rook.location)]
+      p spaces_between
       is_safe = spaces_between.select { |space| @board.test_move(space, rook, self) }.empty?
       #add rook to array if it meets previous two conditions
       castlable_rooks << rook if is_empty && is_safe
