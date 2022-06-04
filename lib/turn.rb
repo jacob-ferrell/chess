@@ -7,24 +7,25 @@ class Turn
     @board = board
     @board.print_board
     play_turn
-    return @board.loser = @player if @player.check_mate?
-    test_check
-    return save_game if get_choices == 'save'
-    test_choices
-
-    make_move
   end
 
   def play_turn
-
+    #end game and assign current player as loser if player is in checkmate
+    return @board.loser = @player if @player.check_mate?
+    test_check
+    #return save_game if get_choices returns a true value
+    get_choices
   end
 
   def get_choices
     choices = PlayerChoices.new(@player, @board)
     @piece = choices.piece
-    return @piece if @piece == 'save'
-    @move = choices.move unless @piece == 'save'
-    return @move if @move == 'save'
+    @move = choices.move 
+    if choices.save
+      return save_game
+    end
+    test_choices unless choices.save
+    choices.save = false
   end
 
   def test_choices
@@ -32,6 +33,7 @@ class Turn
       into_check
       get_choices
     end
+    make_move
   end
 
   def into_check
