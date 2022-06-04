@@ -22,18 +22,19 @@ class Turn
     @piece = choices.piece
     @move = choices.move 
     if choices.save
+      choices.save = false
       return save_game
     end
-    test_choices unless choices.save
-    choices.save = false
+    test_choices
   end
 
   def test_choices
     while @board.test_move(@move, @piece, @player)
       into_check
       get_choices
+      return if @board.game_over
     end
-    make_move
+    make_move 
   end
 
   def into_check
