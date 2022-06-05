@@ -25,11 +25,12 @@ class Player
   end
   #determine if player is capable of castling
   def get_castle_rooks
+    @pieces_on_board = get_partitioned_pieces.first
     king = @pieces_on_board.select { |piece| piece.is_a?(King) }.first
     rooks = @pieces_on_board.select { |piece| piece.is_a?(Rook) && !piece.has_moved }
     #return false if player is in check, has moved their king, or has no elligible rooks
-    return p in_check?, king.has_moved, rooks.empty? if in_check? || king.has_moved || rooks.empty?
-    castlable_rooks = []
+    return [] if in_check? || king.has_moved || rooks.empty?
+    castle_rooks = []
     rooks.each do |rook|
       #get spaces between given rook and king 
       spaces_between = get_spaces_between(duplicate(king.location), duplicate(rook.location))
@@ -39,10 +40,10 @@ class Player
       spaces_between += [duplicate(rook.location)]
       is_safe = spaces_between.select { |space| @board.test_move(space, rook, self) }.empty?
       #add rook to array if it meets previous two conditions
-      castlable_rooks << rook if is_empty && is_safe
+      castle_rooks << rook if is_empty && is_safe
     end
     #return array of rooks unless it is empty
-    castlable_rooks   
+    castle_rooks   
   end
   #determine if player is capable of castling
   def can_castle?
