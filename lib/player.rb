@@ -26,7 +26,7 @@ class Player
   #determine if player is capable of castling
   def get_castle_rooks
     @pieces_on_board = get_partitioned_pieces.first
-    king = @pieces_on_board.select { |piece| piece.is_a?(King) }.first
+    king = @king
     rooks = @pieces_on_board.select { |piece| piece.is_a?(Rook) && !piece.has_moved }
     #return false if player is in check, has moved their king, or has no elligible rooks
     return [] if in_check? || king.has_moved || rooks.empty?
