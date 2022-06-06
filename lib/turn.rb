@@ -58,9 +58,11 @@ class Turn
     @board.print_board
     puts "\n#{@player.name}, you are able to promote your Pawn! Type the name of the type of piece you want to promote it to:"
     type = get_type
-    new_piece = Object.const_get type.capitalize
     (row, col) = @piece.location
-    @board.grid[row][col] = new_piece.new([row, col], @piece.color)
+    new_piece = Object.const_get type.capitalize
+    promoted_piece = new_piece.new([row, col], @piece.color)
+    @board.grid[row][col] = promoted_piece
+    @board.promoted_pieces << promoted_piece
   end
   #get type selection from player
   def get_type

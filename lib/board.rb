@@ -1,9 +1,9 @@
 class Board
-  attr_accessor :grid, :graveyard, :black_king, :white_king, :game_over, :loser
+  attr_accessor :grid, :promoted_pieces, :black_king, :white_king, :game_over, :loser
 
   def initialize
     @grid = build_grid
-    @graveyard = []
+    @promoted_pieces = []
     @game_over = false
     @loser = nil
   end
@@ -67,7 +67,6 @@ class Board
     return castle(move, piece) if is_castle?(move, piece)
     (start_row, start_col) = duplicate(piece.location)
     (end_row, end_col) = move
-    # board.graveyard << board.grid[end_row][end_col] if !test_move && board.grid[end_row][end_col]
     @grid[end_row][end_col] = piece
     piece.location = move
     @grid[start_row][start_col] = nil 
@@ -113,7 +112,9 @@ class Board
   #return all the pieces that a player starts with
   def get_original_pieces(color)
     original_pieces = []
-    8.times { original_pieces << Pawn.new([], color) }
+    promoted_pieces = @promoted_pieces.select { |piece| piece.color == color }
+    promoted_pieces.each { |piece| original_pieces << piece } 
+    (8 - promoted_pieces.length).times { original_pieces << Pawn.new([], color) }
     2.times do
       original_pieces.push(Rook.new([], color), Knight.new([], color), Bishop.new([], color))
     end
