@@ -4,7 +4,7 @@ class Pawn
   include Piece
   attr_accessor :symbol, :color, :location
 
-  def initialize(location, color, _grid)
+  def initialize(location, color)
     @location = location
     @color = color
     @symbol = is_black? ? '♟' : '♙'

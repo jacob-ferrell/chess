@@ -12,8 +12,8 @@ class Board
     # create all starting pieces on the chessboard and store each piece as an object within it's corresponding array element
     grid = Array.new(8) { Array.new(8) }
     # create pawns and add to grid
-    grid[1] = grid[1].map.with_index { |_element, ind| Pawn.new([1, ind], 'black', @grid) }
-    grid[6] = grid[6].map.with_index { |_element, ind| Pawn.new([6, ind], 'white', @grid) }
+    grid[1] = grid[1].map.with_index { |_element, ind| Pawn.new([1, ind], 'black') }
+    grid[6] = grid[6].map.with_index { |_element, ind| Pawn.new([6, ind], 'white') }
     # create rooks and add to grid
     grid[0] = grid[0].map.with_index { |_element, ind| Rook.new([0, ind], 'black') unless (1..6).include?(ind) }
     grid[7] = grid[7].map.with_index { |_element, ind| Rook.new([7, ind], 'white') unless (1..6).include?(ind) }
@@ -40,13 +40,13 @@ class Board
   def print_board
     numbers = (1..8).to_a.reverse
     letters = ('a'..'h').to_a
-    puts "    #{letters.join('   ')}"
+    puts "    #{letters.join('   ')}     #{get_graveyard('black')}"
     puts "  +---+---+---+---+---+---+---+---+ #{@graveyard.map { |p| p.symbol }.join(' ')}"
     @grid.map { |e| e.map { |el| el ? el.symbol : ' ' } }.each_with_index do |e, i|
       puts "#{numbers[i]} | #{e.join(' | ')} |"
       puts '  +---+---+---+---+---+---+---+---+'
     end
-    puts "    #{letters.join('   ')}"
+    puts "    #{letters.join('   ')}     #{get_graveyard('white')}"
   end
   #covert coordinate from letter-number format to row-column
   def get_coordinate(input)
@@ -102,5 +102,32 @@ class Board
     king.location = move
     rook.has_moved = true
     king.has_moved = true
+  end
+
+  def get_graveyard(color)
+    original = get_original_pieces(color)
+    current = get_current_pieces(color)
+    current.each { |x| original.delete_at original.index(x) }
+    original.join(' ')
+  end
+
+  def get_original_pieces(color)
+    original_pieces = []
+    8.times { original_pieces << Pawn.new([], color) }
+    2.times do
+      original_pieces.push(Rook.new([], color), Knight.new([], color), Bishop.new([], color))
+    end
+    original_pieces.push(King.new([], color), Queen.new([], color))
+    original_pieces.map { |piece| piece.symbol }
+  end
+
+  def get_current_pieces(color)
+    current_pieces = []
+    @grid.each do |row|
+      row.each do |space|
+        current_pieces << space if space && space.color == color
+      end
+    end
+    current_pieces.map { |piece| piece.symbol}
   end
 end
