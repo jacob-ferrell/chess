@@ -1,12 +1,14 @@
 class Player
-  attr_accessor :color, :number, :name, :input, :pieces_on_board
+  attr_accessor :color, :number, :name, :input, :pieces_on_board, :computer
 
-  def initialize(color, number, board)
+  def initialize(color, number, board, computer = false)
     @color = color
     @number = number
+    @computer = computer
     @board = board
-    @name = get_name
+    @name = @computer ? 'Computer' : get_name
     @pieces_on_board = get_partitioned_pieces.first
+    
   end
 
   # get player name from user
