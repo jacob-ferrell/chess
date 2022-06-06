@@ -87,12 +87,12 @@ class Board
     piece.has_moved = tmp_has_moved if piece.is_a?(King) || piece.is_a?(Rook)
     check
   end
-
+  #determine if a move is a castle by determing if their chosen piece is a king and their chosen move location is their own rook
   def is_castle?(move, piece)
     end_piece = @grid[move.first][move.last]
     piece.is_a?(King) && end_piece.is_a?(Rook) && piece.color == end_piece.color
   end
-
+  #perform a castle by moving the pieces on the board
   def castle(move, piece)
     rook = @grid[move.first][move.last]
     king = piece
@@ -103,14 +103,14 @@ class Board
     rook.has_moved = true
     king.has_moved = true
   end
-
+  #get each players graveyard by returning whichever pieces have been taken off the board
   def get_graveyard(color)
     original = get_original_pieces(color)
     current = get_current_pieces(color)
     current.each { |x| original.delete_at original.index(x) }
     original.join(' ')
   end
-
+  #return all the pieces that a player starts with
   def get_original_pieces(color)
     original_pieces = []
     8.times { original_pieces << Pawn.new([], color) }
@@ -120,7 +120,7 @@ class Board
     original_pieces.push(King.new([], color), Queen.new([], color))
     original_pieces.map { |piece| piece.symbol }
   end
-
+  #get all player's pieces that are currently on the board
   def get_current_pieces(color)
     current_pieces = []
     @grid.each do |row|
