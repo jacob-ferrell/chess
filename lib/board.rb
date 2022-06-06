@@ -68,7 +68,6 @@ class Board
     (start_row, start_col) = duplicate(piece.location)
     (end_row, end_col) = move
     # board.graveyard << board.grid[end_row][end_col] if !test_move && board.grid[end_row][end_col]
-    p piece, move, [start_row, start_col]
     @grid[end_row][end_col] = piece
     piece.location = move
     @grid[start_row][start_col] = nil 
