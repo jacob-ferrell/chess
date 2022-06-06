@@ -12,19 +12,19 @@ class Turn
   def play_turn
     #end game and assign current player as loser if player is in checkmate
     return @board.loser = @player if @player.check_mate?
-    test_check
+    test_check unless @player.computer
     get_choices
   end
   #get player's piece and move choice and then test them, or save if player chooses
   def get_choices
-    choices = PlayerChoices.new(@player, @board)
+    choices = @player.computer ? ComputerChoices.new(@player, @board) : PlayerChoices.new(@player, @board)
     @piece = choices.piece
     @move = choices.move 
     if choices.save
       choices.save = false
       return save_game
     end
-    test_choices
+    make_move ? @player.computer : test_choices
   end
   #test if player's move choice will result in them being in check, alert them if so, prevent the move, and get choices again. make the move if it passes tests
   def test_choices
@@ -34,7 +34,10 @@ class Turn
       return if @board.game_over
     end
     make_move
-    promote if can_promote? 
+    if can_promote?
+      type = get_type 
+      promote(type)
+    end
   end
   #alert player if they fail to move themselves out of check or if they move themselves into check
   def into_check
@@ -54,10 +57,7 @@ class Turn
     @piece.is_a?(Pawn) && [0, 7].include?(@piece.location.first)
   end
   #prompt player to select a piece type for promotion and perform if selection is valid
-  def promote
-    @board.print_board
-    puts "\n#{@player.name}, you are able to promote your Pawn! Type the name of the type of piece you want to promote it to:"
-    type = get_type
+  def promote(type)
     (row, col) = @piece.location
     new_piece = Object.const_get type.capitalize
     promoted_piece = new_piece.new([row, col], @piece.color)
@@ -66,10 +66,13 @@ class Turn
   end
   #get type selection from player
   def get_type
+    return 'queen' if @player.computer
+    @board.print_board
+    puts "\n#{@player.name}, you are able to promote your Pawn! Type the name of the type of piece you want to promote it to:"
     type = gets.chomp.downcase
     return type if valid_type?(type)
     puts "\nThat type of piece does not exist!"
-    promote
+    get_type
   end
   #determien if players type selection for promotion is valid
   def valid_type?(type)
