@@ -4,6 +4,7 @@ class Game
   def initialize(player_1 = nil, player_2 = nil, board = nil)
     @board = board ||= Board.new
     @board.game_over = false
+    @choice = get_choice
     @player_1 = player_1 ||= Player.new('white', 1, @board)
     @player_2 = player_2 ||= Player.new('black', 2, @board, against_computer?)
     start_game
@@ -11,8 +12,7 @@ class Game
   end
   
   def against_computer?
-    choice = get_choice
-    return choice == 2
+    return @choice == 2
   end
 
   def get_choice

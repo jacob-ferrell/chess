@@ -1,4 +1,5 @@
 class Board
+  require 'colorize'
   attr_accessor :grid, :promoted_pieces, :black_king, :white_king, :game_over, :loser
 
   def initialize
@@ -36,17 +37,39 @@ class Board
     grid
   end
 
+
+
   #give board a visually appealing representation on the command line from which users can play
   def print_board
+    #puts "+---+".colorize(:background => :red)
     numbers = (1..8).to_a.reverse
     letters = ('a'..'h').to_a
-    puts "    #{letters.join('   ')}     #{get_graveyard('black')}"
-    puts "  +---+---+---+---+---+---+---+---+"
-    @grid.map { |e| e.map { |el| el ? el.symbol : ' ' } }.each_with_index do |e, i|
-      puts "#{numbers[i]} | #{e.join(' | ')} |"
-      puts '  +---+---+---+---+---+---+---+---+'
+    red_space = ' '.colorize(:background => :red)
+    blue_space = ' '.colorize(:background => :light_red)
+    puts "   #{letters.join('  ')}     #{get_graveyard('black')}"
+    #puts "  +---+---+---+---+---+---+---+---+".colorize(:background => :red)
+    @grid.map.with_index { |e, n| e.map.with_index do |el, i|
+      if el
+        (i + n).even? ?  el.symbol.colorize(:background => :red) : el.symbol.colorize(:background => :light_red)
+      else
+        (i + n).even? ? red_space : blue_space
+        
+      end
+    end }.each_with_index do |e, i|
+      
+      space = i.even? ? red_space : blue_space
+      alt_space = i.odd? ? red_space : blue_space
+      line = ""
+      n = 0
+      while n < 8
+      line += space + e[n] + space + alt_space + e[n + 1] + alt_space
+      n += 2 
+      end
+      
+      puts "#{numbers[i]} #{line}"
+      #puts '  +---+---+---+---+---+---+---+---+'.colorize(:background => :red)
     end
-    puts "    #{letters.join('   ')}     #{get_graveyard('white')}"
+    puts "   #{letters.join('  ')}     #{get_graveyard('white')}"
   end
   #covert coordinate from letter-number format to row-column
   def get_coordinate(input)

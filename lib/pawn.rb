@@ -7,7 +7,7 @@ class Pawn
   def initialize(location, color)
     @location = location
     @color = color
-    @symbol = is_black? ? '♟' : '♙'
+    @symbol = is_black? ? '♟'.black : '♟'
   end
 
   def move_set(board)

@@ -7,7 +7,7 @@ class Rook
   def initialize(location, color)
     @location = location
     @color = color
-    @symbol = is_black? ? '♜' : '♖'
+    @symbol = is_black? ? '♜'.black : '♜'
     @has_moved = false
   end
 
