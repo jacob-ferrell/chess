@@ -4,7 +4,7 @@ class Game
   def initialize(player_1 = nil, player_2 = nil, board = nil)
     @board = board ||= Board.new
     @board.game_over = false
-    @choice = get_choice
+    @choice = get_choice unless player_1
     @player_1 = player_1 ||= Player.new('white', 1, @board)
     @player_2 = player_2 ||= Player.new('black', 2, @board, against_computer?)
     start_game

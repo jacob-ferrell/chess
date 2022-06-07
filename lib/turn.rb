@@ -24,7 +24,8 @@ class Turn
       choices.save = false
       return save_game
     end
-    make_move ? @player.computer : test_choices
+    return make_move if @player.computer
+    test_choices
   end
   #test if player's move choice will result in them being in check, alert them if so, prevent the move, and get choices again. make the move if it passes tests
   def test_choices

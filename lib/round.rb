@@ -10,7 +10,7 @@ class Round
   #start a new turn for each player until a draw or checkmate
   def play_round
     @@players.each { |player| Turn.new(player, @board, @@players) unless end_game? } until end_game?
-    draw unless get_winner
+    draw if is_draw?
   end
   #test if there is a draw or checkmate
   def end_game?
